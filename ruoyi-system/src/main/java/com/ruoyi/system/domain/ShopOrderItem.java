@@ -6,29 +6,28 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
- * 消费项目表 shop_item
+ * 订单明细表 shop_order_item
  * 
  * @author ruoyi
  * @date 2019-04-03
  */
 @Data
-public class ShopItem extends BaseEntity
+public class ShopOrderItem extends BaseEntity
 {
 	private static final long serialVersionUID = 1L;
 	
-	/** id */
-	private String itemId;
-	/** 项目名称 */
-	private String itemName;
-	/** 速记码 */
-	private String itemShort;
-	/** 介绍 */
-	private String itemInfo;
+	/** 明细ID */
+	private String orderItemId;
+	/** 订单ID */
+	private String orderId;
+	/** 服务项目ID */
+	private String shopItemId;
+	/** 数量 */
+	private Integer itemNum;
 	/** 单价 */
 	private BigDecimal itemPrice;
-	/** 状态 */
-	private Integer status;
 
 }

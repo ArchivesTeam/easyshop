@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ClientMapper">
+    
+    <resultMap type="Client" id="ClientResult">
+        <result property="clientId"    column="client_id"    />
+        <result property="clientCard"    column="client_card"    />
+        <result property="clientName"    column="client_name"    />
+        <result property="clientPhone"    column="client_phone"    />
+        <result property="clientSex"    column="client_sex"    />
+        <result property="clientAge"    column="client_age"    />
+        <result property="clientBirthday"    column="client_birthday"    />
+        <result property="clientAddress"    column="client_address"    />
+        <result property="clientProvince"    column="client_province"    />
+        <result property="clientCity"    column="client_city"    />
+        <result property="clientCountry"    column="client_country"    />
+        <result property="clientCompany"    column="client_company"    />
+        <result property="clientBalance"    column="client_balance"    />
+        <result property="clientStatus"    column="client_status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+	
+	<sql id="selectClientVo">
+        select client_id, client_card, client_name, client_phone, client_sex, client_age, client_birthday, client_address, client_province, client_city, client_country, client_company, client_balance, client_status,dept_id from sys_client
+    </sql>
+	
+    <select id="selectClientList" parameterType="Client" resultMap="ClientResult">
+        <include refid="selectClientVo"/>
+        <where>  
+            <if test="clientId != null  and clientId != '' "> and client_id = #{clientId}</if>
+             <if test="clientCard != null  and clientCard != '' "> and client_card = #{clientCard}</if>
+             <if test="clientName != null  and clientName != '' "> and client_name = #{clientName}</if>
+             <if test="clientPhone != null  and clientPhone != '' "> and client_phone = #{clientPhone}</if>
+             <if test="clientSex != null "> and client_sex = #{clientSex}</if>
+             <if test="clientAge != null "> and client_age = #{clientAge}</if>
+             <if test="clientBirthday != null "> and client_birthday = #{clientBirthday}</if>
+             <if test="clientAddress != null  and clientAddress != '' "> and client_address = #{clientAddress}</if>
+             <if test="clientProvince != null  and clientProvince != '' "> and client_province = #{clientProvince}</if>
+             <if test="clientCity != null  and clientCity != '' "> and client_city = #{clientCity}</if>
+             <if test="clientCountry != null  and clientCountry != '' "> and client_country = #{clientCountry}</if>
+             <if test="clientCompany != null  and clientCompany != '' "> and client_company = #{clientCompany}</if>
+             <if test="clientBalance != null "> and client_balance = #{clientBalance}</if>
+             <if test="clientStatus != null "> and client_status = #{clientStatus}</if>
+            <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+         </where>
+    </select>
+    
+    <select id="selectClientById" parameterType="String" resultMap="ClientResult">
+        <include refid="selectClientVo"/>
+        where client_id = #{clientId}
+    </select>
+        
+    <insert id="insertClient" parameterType="Client">
+        insert into sys_client
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="clientId != null  and clientId != ''  ">client_id,</if>
+			<if test="clientCard != null  and clientCard != ''  ">client_card,</if>
+			<if test="clientName != null  and clientName != ''  ">client_name,</if>
+			<if test="clientPhone != null  and clientPhone != ''  ">client_phone,</if>
+			<if test="clientSex != null  ">client_sex,</if>
+			<if test="clientAge != null  ">client_age,</if>
+			<if test="clientBirthday != null  ">client_birthday,</if>
+			<if test="clientAddress != null  and clientAddress != ''  ">client_address,</if>
+			<if test="clientProvince != null  and clientProvince != ''  ">client_province,</if>
+			<if test="clientCity != null  and clientCity != ''  ">client_city,</if>
+			<if test="clientCountry != null  and clientCountry != ''  ">client_country,</if>
+			<if test="clientCompany != null  and clientCompany != ''  ">client_company,</if>
+			<if test="clientBalance != null  ">client_balance,</if>
+			<if test="clientStatus != null  ">client_status,</if>
+			<if test="deptId != null  ">dept_id,</if>
+            <if test="createBy != null  and createBy != ''  ">create_by,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="clientId != null  and clientId != ''  ">#{clientId},</if>
+			<if test="clientCard != null  and clientCard != ''  ">#{clientCard},</if>
+			<if test="clientName != null  and clientName != ''  ">#{clientName},</if>
+			<if test="clientPhone != null  and clientPhone != ''  ">#{clientPhone},</if>
+			<if test="clientSex != null  ">#{clientSex},</if>
+			<if test="clientAge != null  ">#{clientAge},</if>
+			<if test="clientBirthday != null  ">#{clientBirthday},</if>
+			<if test="clientAddress != null  and clientAddress != ''  ">#{clientAddress},</if>
+			<if test="clientProvince != null  and clientProvince != ''  ">#{clientProvince},</if>
+			<if test="clientCity != null  and clientCity != ''  ">#{clientCity},</if>
+			<if test="clientCountry != null  and clientCountry != ''  ">#{clientCountry},</if>
+			<if test="clientCompany != null  and clientCompany != ''  ">#{clientCompany},</if>
+			<if test="clientBalance != null  ">#{clientBalance},</if>
+			<if test="clientStatus != null  ">#{clientStatus},</if>
+			<if test="deptId != null  ">#{deptId},</if>
+            <if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+            now()
+         </trim>
+    </insert>
+	 
+    <update id="updateClient" parameterType="Client">
+        update sys_client
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="clientCard != null  and clientCard != ''  ">client_card = #{clientCard},</if>
+            <if test="clientName != null  and clientName != ''  ">client_name = #{clientName},</if>
+            <if test="clientPhone != null  and clientPhone != ''  ">client_phone = #{clientPhone},</if>
+            <if test="clientSex != null  ">client_sex = #{clientSex},</if>
+            <if test="clientAge != null  ">client_age = #{clientAge},</if>
+            <if test="clientBirthday != null  ">client_birthday = #{clientBirthday},</if>
+            <if test="clientAddress != null  and clientAddress != ''  ">client_address = #{clientAddress},</if>
+            <if test="clientProvince != null  and clientProvince != ''  ">client_province = #{clientProvince},</if>
+            <if test="clientCity != null  and clientCity != ''  ">client_city = #{clientCity},</if>
+            <if test="clientCountry != null  and clientCountry != ''  ">client_country = #{clientCountry},</if>
+            <if test="clientCompany != null  and clientCompany != ''  ">client_company = #{clientCompany},</if>
+            <if test="clientBalance != null  ">client_balance = #{clientBalance},</if>
+            <if test="clientStatus != null  ">client_status = #{clientStatus},</if>
+        </trim>
+        where client_id = #{clientId}
+    </update>
+
+	<delete id="deleteClientById" parameterType="String">
+        delete from sys_client where client_id = #{clientId}
+    </delete>
+	
+    <delete id="deleteClientByIds" parameterType="String">
+        delete from sys_client where client_id in 
+        <foreach item="clientId" collection="array" open="(" separator="," close=")">
+            #{clientId}
+        </foreach>
+    </delete>
+    
+</mapper>
