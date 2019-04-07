@@ -1,9 +1,15 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.Client;
+import com.ruoyi.system.domain.ShopOrderItem;
+import com.ruoyi.system.service.IClientService;
+import com.ruoyi.system.service.IShopOrderItemService;
 import com.ruoyi.web.core.utils.SequenceUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +43,12 @@ public class ShopOrderController extends BaseController
 	
 	@Autowired
 	private IShopOrderService shopOrderService;
+
+	@Autowired
+    private IClientService clientService;
+
+	@Autowired
+	private IShopOrderItemService shopOrderItemService;
 	
 	@RequiresPermissions("system:shopOrder:view")
 	@GetMapping()
@@ -76,8 +88,10 @@ public class ShopOrderController extends BaseController
 	 * 新增订单
 	 */
 	@GetMapping("/add")
-	public String add()
+	public String add(ModelMap mmap)
 	{
+		mmap.put("user", ShiroUtils.getSysUser());
+        mmap.put("clients", clientService.selectClientList(null));
 	    return prefix + "/add";
 	}
 	
@@ -89,11 +103,12 @@ public class ShopOrderController extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(ShopOrder shopOrder)
-	{		
+	{
+		shopOrder.setShopOrderItems(JSONArray.parseArray(shopOrder.getShopOrderItemsStr(), ShopOrderItem.class));
 		shopOrder.setOrderId(UUID.randomUUID().toString());
-		shopOrder.setCreateBy(ShiroUtils.getLoginName());
+		shopOrder.setCreateBy(ShiroUtils.getUserId().toString());
 		shopOrder.setDeptId(ShiroUtils.getSysUser().getDeptId());
-		shopOrder.setOrderSn("XF" + SequenceUtils.getSequenceStringForYearMonthDay("XF"));
+		shopOrder.setOrderSn("XF" + SequenceUtils.getSequenceByYearMonthDay("XF"));
 		return toAjax(shopOrderService.insertShopOrder(shopOrder));
 	}
 
@@ -104,8 +119,23 @@ public class ShopOrderController extends BaseController
 	public String edit(@PathVariable("orderId") String orderId, ModelMap mmap)
 	{
 		ShopOrder shopOrder = shopOrderService.selectShopOrderById(orderId);
+		shopOrder.setShopOrderItems(shopOrderItemService.selectShopOrderItemListByOrderId(orderId));
 		mmap.put("shopOrder", shopOrder);
+		mmap.put("user", ShiroUtils.getSysUser());
 	    return prefix + "/edit";
+	}
+
+	/**
+	 * 修改订单
+	 */
+	@GetMapping("/view/{orderId}")
+	public String view(@PathVariable("orderId") String orderId, ModelMap mmap)
+	{
+		ShopOrder shopOrder = shopOrderService.selectShopOrderById(orderId);
+		Client client = clientService.selectClientById(shopOrder.getClientId());
+		mmap.put("shopOrder", shopOrder);
+		mmap.put("client", client);
+	    return prefix + "/view";
 	}
 	
 	/**
@@ -116,7 +146,8 @@ public class ShopOrderController extends BaseController
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(ShopOrder shopOrder)
-	{		
+	{
+		shopOrder.setShopOrderItems(JSONArray.parseArray(shopOrder.getShopOrderItemsStr(), ShopOrderItem.class));
 		return toAjax(shopOrderService.updateShopOrder(shopOrder));
 	}
 	
@@ -130,6 +161,25 @@ public class ShopOrderController extends BaseController
 	public AjaxResult remove(String ids)
 	{		
 		return toAjax(shopOrderService.deleteShopOrderByIds(ids));
+	}
+
+	/**
+	 * 改变订单状态
+	 */
+	@RequiresPermissions("system:shopOrder:status")
+	@Log(title = "订单", businessType = BusinessType.DELETE)
+	@PostMapping( "/changeStatus")
+	@ResponseBody
+	public AjaxResult changeStatus(String orderId, int status)
+	{
+		ShopOrder shopOrder = new ShopOrder();
+		shopOrder.setOrderId(orderId);
+		shopOrder.setStatus(status);
+		if (status == 1){
+			shopOrder.setPayBy(ShiroUtils.getSysUser().getUserId().toString());
+			shopOrder.setPayDate(new Date());
+		}
+		return toAjax(shopOrderService.updateShopOrder(shopOrder));
 	}
 	
 }

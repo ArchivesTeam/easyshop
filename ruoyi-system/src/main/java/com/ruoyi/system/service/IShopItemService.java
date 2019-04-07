@@ -50,5 +50,5 @@ public interface IShopItemService
      * @return 结果
      */
 	public int deleteShopItemByIds(String ids);
-	
+
 }

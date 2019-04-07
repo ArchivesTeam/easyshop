@@ -19,7 +19,7 @@ public class SequenceUtils {
      * @param sequenceCode
      * @return
      */
-    public static String getSequenceStringForValue(String sequenceCode) {
+    public static String getSequenceByYear(String sequenceCode) {
         SequenceMapper sequenceMapper = (SequenceMapper) SpringContextUtils.getApplicationContext().getBean("sequenceMapper");
 
         //根据当前年份查询value值
@@ -46,7 +46,7 @@ public class SequenceUtils {
      * @param sequenceCode
      * @return
      */
-    public static String getSequenceStringForYearMonthDay(String sequenceCode) {
+    public static String getSequenceByMonthDay(String sequenceCode) {
         SequenceMapper sequenceMapper = (SequenceMapper) SpringContextUtils.getApplicationContext().getBean("sequenceMapper");
 
         //根据当前年份、月份、天、查询value值
@@ -115,7 +115,7 @@ public class SequenceUtils {
      * @param sequenceCode
      * @return
      */
-    public static String getReturnSequenceStringForYearMonthDay(String sequenceCode) {
+    public static String getSequenceByYearMonthDay(String sequenceCode) {
         SequenceMapper sequenceMapper = (SequenceMapper) SpringContextUtils.getApplicationContext().getBean("sequenceMapper");
 
         //根据当前年份、月份、天、查询value值

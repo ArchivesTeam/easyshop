@@ -1,6 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+import java.util.UUID;
+
+import com.ruoyi.system.domain.ShopOrderItem;
+import com.ruoyi.system.mapper.ShopOrderItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.ShopOrderMapper;
@@ -19,6 +23,9 @@ public class ShopOrderServiceImpl implements IShopOrderService
 {
 	@Autowired
 	private ShopOrderMapper shopOrderMapper;
+
+	@Autowired
+	private ShopOrderItemMapper shopOrderItemMapper;
 
 	/**
      * 查询订单信息
@@ -53,7 +60,12 @@ public class ShopOrderServiceImpl implements IShopOrderService
 	@Override
 	public int insertShopOrder(ShopOrder shopOrder)
 	{
-	    return shopOrderMapper.insertShopOrder(shopOrder);
+		if (shopOrderMapper.insertShopOrder(shopOrder) > 0){
+			insertOrderItem(shopOrder);
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 	
 	/**
@@ -65,7 +77,9 @@ public class ShopOrderServiceImpl implements IShopOrderService
 	@Override
 	public int updateShopOrder(ShopOrder shopOrder)
 	{
-	    return shopOrderMapper.updateShopOrder(shopOrder);
+		shopOrderItemMapper.deleteShopOrderItemByOrderId(shopOrder.getOrderId());
+		insertOrderItem(shopOrder);
+		return shopOrderMapper.updateShopOrder(shopOrder);
 	}
 
 	/**
@@ -79,5 +93,17 @@ public class ShopOrderServiceImpl implements IShopOrderService
 	{
 		return shopOrderMapper.deleteShopOrderByIds(Convert.toStrArray(ids));
 	}
-	
+
+	/**
+	 * 写入订单明细
+	 * @param shopOrder
+	 */
+	private void insertOrderItem(ShopOrder shopOrder){
+		for (ShopOrderItem item : shopOrder.getShopOrderItems()){
+			item.setOrderItemId(UUID.randomUUID().toString());
+			item.setOrderId(shopOrder.getOrderId());
+			item.setCreateBy(shopOrder.getCreateBy());
+			shopOrderItemMapper.insertShopOrderItem(item);
+		}
+	}
 }

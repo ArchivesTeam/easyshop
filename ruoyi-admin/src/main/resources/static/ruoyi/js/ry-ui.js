@@ -298,6 +298,17 @@
                 });
                 return actions.join('');
             },
+			//回显服务区项目名称
+            selectShopItemName: function (datas, value) {
+                var actions = [];
+                $.each(datas, function (index, shopItem) {
+                    if (shopItem.shopItemName == value) {
+                        actions.push("<span>" + shopItem.shopItemName + "</span>");
+                        return false;
+                    }
+                });
+                return actions.join('');
+            },
             // 显示表格指定列
             showColumn: function(column) {
                 $("#" + $.table._option.id).bootstrapTable('showColumn', column);

@@ -15,7 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="orderAmount"    column="order_amount"    />
         <result property="orderDiscount"    column="order_discount"    />
         <result property="deptId"    column="dept_id"    />
-        <result property="clientId"    column="client_od"    />
+        <result property="clientId"    column="client_id"    />
     </resultMap>
 	
 	<sql id="selectShopOrderVo">
@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
              <if test="deptId != null "> and dept_id = #{deptId}</if>
              <if test="clientId != null "> and client_id = #{clientId}</if>
          </where>
+        order by create_time desc
     </select>
     
     <select id="selectShopOrderById" parameterType="String" resultMap="ShopOrderResult">

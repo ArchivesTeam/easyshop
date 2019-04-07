@@ -7,6 +7,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单表 shop_order
@@ -37,5 +38,9 @@ public class ShopOrder extends BaseEntity
 	private String clientId;
 	/** 门店 */
 	private Long deptId;
+
+	private List<Client> clients;
+	private List<ShopOrderItem> shopOrderItems;
+	private String shopOrderItemsStr;
 
 }

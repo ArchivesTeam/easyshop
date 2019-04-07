@@ -48,7 +48,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
             <if test="createTime != null "> and create_time = #{createTime}</if>
             <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="searchValue != null and searchValue != '' ">
+                and (
+                client_card like  concat(concat('%',#{searchValue}),'%')
+                or client_phone like  concat(concat('%',#{searchValue}),'%')
+                or client_name like  concat(concat('%',#{searchValue}),'%')
+                )
+            </if>
          </where>
+        order by create_time desc
     </select>
     
     <select id="selectClientById" parameterType="String" resultMap="ClientResult">

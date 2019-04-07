@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header('通知公告')"></head>
+
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <h1 class="font-bold" th:text="*{notice.noticeTitle}"></h1>
+        <p>
+            <span class="text-primary">
+                <span th:text="${notice.createBy}"></span>
+            </span>
+            <span class="text-muted" style="margin: 0 5px">|</span>
+            <span class="text-muted">发布于 </span>
+            <span class="text-muted" th:text="${#dates.format(notice.createTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+        </p>
+
+        <hr/>
+        <div class="lead" style="font-size: medium" th:utext="*{notice.noticeContent}"></div>
+    </div>
+    <div th:include="include::footer"></div>
+</body>
+</html>

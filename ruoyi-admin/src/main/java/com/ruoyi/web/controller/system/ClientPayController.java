@@ -93,7 +93,7 @@ public class ClientPayController extends BaseController
 		clientPay.setPayId(UUID.randomUUID().toString());
 		clientPay.setCreateBy(ShiroUtils.getLoginName());
 		clientPay.setDeptId(ShiroUtils.getSysUser().getDeptId());
-		clientPay.setPaySn("P" + SequenceUtils.getSequenceStringForYearMonthDay("P"));
+		clientPay.setPaySn("P" + SequenceUtils.getSequenceByYearMonthDay("P"));
 		return toAjax(clientPayService.insertClientPay(clientPay));
 	}
 

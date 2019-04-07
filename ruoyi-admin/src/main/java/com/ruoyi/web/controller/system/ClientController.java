@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.ruoyi.framework.util.ShiroUtils;
@@ -55,6 +57,20 @@ public class ClientController extends BaseController
 		startPage();
         List<Client> list = clientService.selectClientList(client);
 		return getDataTable(list);
+	}
+
+	/**
+	 * ajax查询客户
+	 */
+	@PostMapping("/ajaxClientList")
+	@ResponseBody
+	public AjaxResult ajaxClientList(String searchValue)
+	{
+		Client client = new Client();
+		client.setSearchValue(searchValue);
+		Map<String, Object> map = new HashMap<>(16);
+		map.put("clients", clientService.selectClientList(client));
+		return AjaxResult.success("成功", map);
 	}
 	
 	

@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.ShopOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.ShopOrderItemMapper;
@@ -43,8 +45,15 @@ public class ShopOrderItemServiceImpl implements IShopOrderItemService
 	{
 	    return shopOrderItemMapper.selectShopOrderItemList(shopOrderItem);
 	}
-	
-    /**
+
+	@Override
+	public List<ShopOrderItem> selectShopOrderItemListByOrderId(String orderId) {
+		ShopOrderItem shopOrderItem = new ShopOrderItem();
+		shopOrderItem.setOrderId(orderId);
+		return shopOrderItemMapper.selectShopOrderItemList(shopOrderItem);
+	}
+
+	/**
      * 新增订单明细
      * 
      * @param shopOrderItem 订单明细信息

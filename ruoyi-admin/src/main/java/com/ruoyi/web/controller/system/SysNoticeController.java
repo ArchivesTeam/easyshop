@@ -54,6 +54,16 @@ public class SysNoticeController extends BaseController
     }
 
     /**
+     * 查看公告
+     */
+    @GetMapping("/view/{noticeId}")
+    public String view(@PathVariable("noticeId") Long noticeId, ModelMap mmap)
+    {
+        mmap.put("notice", noticeService.selectNoticeById(noticeId));
+        return prefix + "/view";
+    }
+
+    /**
      * 新增公告
      */
     @GetMapping("/add")

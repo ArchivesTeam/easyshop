@@ -25,6 +25,7 @@ public class ShopOrderItem extends BaseEntity
 	private String orderId;
 	/** 服务项目ID */
 	private String shopItemId;
+	private String shopItemName;
 	/** 数量 */
 	private Integer itemNum;
 	/** 单价 */

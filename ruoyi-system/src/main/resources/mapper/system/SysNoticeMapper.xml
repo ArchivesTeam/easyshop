@@ -81,5 +81,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{noticeId}
         </foreach>
     </delete>
+
+    <select id="selectNoticeListForIndex" parameterType="SysNotice" resultMap="SysNoticeResult">
+
+        <include refid="selectNoticeVo"/>
+        <where>
+            <if test="noticeTitle != null and noticeTitle != ''">
+                AND notice_title like concat(concat('%',#{noticeTitle}),'%')
+            </if>
+            <if test="noticeType != null and noticeType != ''">
+                AND notice_type = #{noticeType}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                AND create_by like concat(concat('%',#{createBy}),'%')
+            </if>
+        </where>
+        order by create_time desc limit 5
+    </select>
     
 </mapper>

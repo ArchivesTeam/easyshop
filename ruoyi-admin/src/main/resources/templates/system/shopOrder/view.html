@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改订单')"/>
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>订单信息</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="form-horizontal m" th:object="${shopOrder}">
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">流水号：</label>
+                                <div class="col-sm-7">
+                                    <input id="orderId" name="orderId" th:field="*{orderId}" type="hidden">
+                                    <label id="orderSn" name="orderSn" th:text="*{orderSn}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">门店：</label>
+                                <div class="col-sm-7">
+                                    <label id="deptId" name="createBy" th:text="*{@dept.getLabel(deptId)}" class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">状态：</label>
+                                <div class="col-sm-7">
+                                    <label id="status" name="status" th:text="*{@dict.getLabel('order_status',status)}" class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">下单人：</label>
+                                <div class="col-sm-7">
+                                    <label id="createBy" name="createBy" th:text="*{@user.getUserName(createBy)}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">下单时间：</label>
+                                <div class="col-sm-7">
+                                    <label id="createTime" name="payDate"
+                                           th:text="*{#dates.format(createTime,'yyyy-MM-dd HH:mm:ss')}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">金额：</label>
+                                <div class="col-sm-7">
+                                    <label id="orderAmount" name="orderAmount" th:text="*{orderAmount}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">收款人：</label>
+                                <div class="col-sm-7">
+                                    <label id="payBy" name="payBy" th:text="*{payBy}" class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">收款时间：</label>
+                                <div class="col-sm-7">
+                                    <label id="payDate" name="payDate"
+                                           th:text="*{#dates.format(payDate,'yyyy-MM-dd HH:mm:ss')}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">折扣：</label>
+                                <div class="col-sm-7">
+                                    <label id="order discount" name="orderDiscount" th:text="*{orderDiscount}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>会员信息</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="form-horizontal m" th:object="${client}">
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">姓名：</label>
+                                <div class="col-sm-7">
+                                    <label id="clientName" name="orderSn" th:text="*{clientName}" class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">卡号：</label>
+                                <div class="col-sm-7">
+                                    <label id="clientCard" name="clientCard" th:text="*{clientCard}" class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">电话：</label>
+                                <div class="col-sm-7">
+                                    <label id="clientPhone" name="clientPhone" th:text="*{clientPhone}" class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">性别：</label>
+                                <div class="col-sm-7">
+                                    <label id="clientSex" name="clientSex" th:text="*{@dict.getLabel('sys_user_sex',clientSex)}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label class="col-sm-4 control-label">年龄：</label>
+                                <div class="col-sm-7">
+                                    <label id="clientAge" name="clientAge" th:text="*{clientAge}"
+                                           class="form-control"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>消费明细</h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="shopitem-table" data-mobile-responsive="true"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div th:include="include::footer"></div>
+<script th:inline="javascript">
+
+    $(function () {
+        var itemTable = new ShopItemTableInit();
+        itemTable.Init();
+    });
+
+    var ShopItemTableInit = function () {
+        var itemTableInit = new Object();
+        //初始化Table
+        itemTableInit.Init = function () {
+            $('#shopitem-table').bootstrapTable({
+                url: ctx + "system/shopOrderItem/list",      //请求后台的URL（*）
+                contentType: "application/x-www-form-urlencoded",   // 编码类型
+                method: 'post',                      //请求方式（*）
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*
+                queryParams: { orderId: $("#orderId").val() },
+                columns: [
+                    {
+                        field: 'shopItemName',
+                        title: '服务项目'
+                    },
+                    {
+                        field: 'itemNum',
+                        title: '数量'
+                    },
+                    {
+                        field: 'itemPrice',
+                        title: '单价'
+                    },
+                    {
+                        field: 'sumPrice',
+                        title: '总金额',
+                        formatter: function (value, row, index) {
+                            var sumPrice = row.itemNum * row.itemPrice;
+                            return sumPrice.toFixed(2);
+                        }
+                    }]
+            });
+        };
+
+        return itemTableInit;
+    };
+
+</script>
+</body>
+</html>

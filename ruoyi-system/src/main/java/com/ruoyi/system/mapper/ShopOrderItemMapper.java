@@ -58,5 +58,7 @@ public interface ShopOrderItemMapper
      * @return 结果
      */
 	public int deleteShopOrderItemByIds(String[] orderItemIds);
-	
+
+	public int deleteShopOrderItemByOrderId(String orderId);
+
 }

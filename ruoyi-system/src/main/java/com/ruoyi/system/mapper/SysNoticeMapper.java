@@ -49,4 +49,11 @@ public interface SysNoticeMapper
      * @return 结果
      */
     public int deleteNoticeByIds(String[] noticeIds);
+
+    /**
+     * 查询公告列表用于首页显示
+     * @param notice
+     * @return
+     */
+    List<SysNotice> selectNoticeListForIndex(SysNotice notice);
 }

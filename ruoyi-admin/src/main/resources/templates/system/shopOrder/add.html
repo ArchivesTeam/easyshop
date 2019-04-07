@@ -1,78 +1,269 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<th:block th:include="include :: header('新增订单')" />
+    <th:block th:include="include :: select2-css"/>
+    <th:block th:include="include :: header('新增订单')"/>
 </head>
 <body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <div class="col-sm-6">
         <form class="form-horizontal m" id="form-shopOrder-add">
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">流水号：</label>
-				<div class="col-sm-8">
-					<input id="orderSn" name="orderSn" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">付款人：</label>
-				<div class="col-sm-8">
-					<input id="payBy" name="payBy" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">创建人：</label>
-				<div class="col-sm-8">
-					<input id="createBy" name="createBy" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">创建时间：</label>
-				<div class="col-sm-8">
-					<input id="createDate" name="createDate" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">付款时间：</label>
-				<div class="col-sm-8">
-					<input id="payDate" name="payDate" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">状态：</label>
-				<div class="col-sm-8">
-					<input id="status" name="status" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">金额：</label>
-				<div class="col-sm-8">
-					<input id="orderAmount" name="orderAmount" class="form-control" type="text">
-				</div>
-			</div>
-			<div class="form-group">	
-				<label class="col-sm-3 control-label">折扣：</label>
-				<div class="col-sm-8">
-					<input id="order discount" name="orderDiscount" class="form-control" type="text">
-				</div>
-			</div>
-		</form>
-	</div>
-    <div th:include="include::footer"></div>
-    <script type="text/javascript">
-		var prefix = ctx + "system/shopOrder"
-		$("#form-shopOrder-add").validate({
-			rules:{
-				xxxx:{
-					required:true,
-				},
-			},
-			focusCleanup: true
-		});
-		
-		function submitHandler() {
-	        if ($.validate.form()) {
-	            $.operate.save(prefix + "/add", $('#form-shopOrder-add').serialize());
-	        }
-	    }
-	</script>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">会员：</label>
+                <div class="col-sm-8">
+                    <select id="clientId" name="clientId" class="form-control select2-hidden-accessible">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">折扣：</label>
+                <div class="col-sm-8">
+                    <input id="orderDiscount" name="orderDiscount" class="form-control" type="text" th:value="1" oninput="getTotalAmount()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">总金额：</label>
+                <div class="col-sm-8">
+                    <input id="orderAmount" name="orderAmount" class="form-control" type="text" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">门店：</label>
+                <div class="col-sm-8">
+                    <label id="deptName" class="form-control" th:text="${user.dept.deptName}"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">制单人：</label>
+                <div class="col-sm-8">
+                    <label id="createName" class="form-control" th:text="${user.userName}" ></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>服务项目</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-inline">
+                            <div class="form-group" style="width: 200px;">
+                                <select id="itemId" class="form-control select2-hidden-accessible">
+                                    <option> 请选择 </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" placeholder="请输入数量" id="itemNum"
+                                       class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="button" onclick="addShopItem()">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul id="itemList" class="list-group">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: select2-js"/>
+<script type="text/javascript">
+
+    var prefix = ctx + "system/shopOrder";
+    var shopItemList = [];
+    var shopItem = {};
+    var totalAmount = 0;
+    var index = 0;
+
+    $("#clientId").empty();
+    $("#itemId").empty();
+    $(function () {
+        $("#clientId").select2({
+            placeholder: {
+                id: '-1', // the value of the option
+                text: '输入会员姓名、手机号或卡号搜索'
+            },
+            allowClear: false,
+            tags: false,
+            ajax: {
+                url: "/system/client/ajaxClientList",
+                type: "POST",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchValue:params.term
+                    };
+                },
+                processResults: function (data) {
+                    if (data.code === 0) {
+                        var dataList = data.data.clients;
+                        var clients = [];
+                        for(var i=0; i<dataList.length; i++){
+                            clients.push({id: dataList[i].clientId, text: dataList[i].clientName + "  " + dataList[i].clientPhone})
+                        }
+                        return {
+                            results: clients
+                        };
+                    }
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            templateResult: function repo(repo){
+                return repo.text;
+            },
+            templateSelection:function formatSelectRepo(repo){
+                return repo.text;
+            }
+        });
+
+        $("#itemId").select2({
+            placeholder: {
+                id: '-1', // the value of the option
+                text: '请输入项目名称/速记码'
+            },
+            allowClear: false,
+            tags: false,
+            ajax: {
+                url: "/system/shopItem/ajaxList",
+                type: "POST",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchValue:params.term
+                    };
+                },
+                processResults: function (data) {
+                    if (data.code === 0) {
+                        var dataList = data.data.items;
+                        var items = [];
+                        for(var i=0; i<dataList.length; i++){
+                            items.push({id: dataList[i].itemId, text: dataList[i].itemName, itemPrice: dataList[i].itemPrice})
+                        }
+                        return {
+                            results: items
+                        };
+                    }
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) { return markup; },
+            minimumInputLength: 1,
+            templateResult: function repo(repo){
+
+                return repo.text;
+            },
+            templateSelection:function formatSelectRepo(repo){
+                shopItem = repo;
+                return repo.text;
+            }
+        });
+    });
+
+    // $("#form-shopOrder-add").validate({
+    //     rules: {
+    //         xxxx: {
+    //             required: true,
+    //         },
+    //     },
+    //     focusCleanup: true
+    // });
+
+
+
+
+    function addShopItem() {
+
+        index ++;
+        var itemListDom = $("#itemList");
+        var itemId = $("#itemId option:checked").val();
+        var itemName = $("#itemId option:checked").text();
+        var itemNum = parseInt($("#itemNum").val());
+        var sumPrice = shopItem.itemPrice * itemNum;
+
+        shopItem.itemIndex = index;
+        shopItem.sumPrice = sumPrice;
+        shopItem.shopItemId = itemId;
+        shopItem.shopItemName = itemName;
+        shopItem.itemNum = itemNum;
+        totalAmount = totalAmount + sumPrice;
+        shopItemList.push(shopItem);
+
+        var item =  '<li id="itemLi_'+ itemId + index +'" class="list-group-item"><div class="row"><div class="col-lg-6">' +
+            '<h3>'+ itemName +'</h3>' +
+            '<small class="block text-muted">' + shopItem.itemPrice.toFixed(2) +' * ' + itemNum +' </small>' +
+            '</div>' +
+            '<div class="col-lg-4">' +
+            '<h2 class="text-danger">' + sumPrice.toFixed(2) + '</h2>' +
+            '</div>' +
+            '<div class="col-lg-2">' +
+            '<a class="btn btn-danger" onclick="removeShopItem(\''+itemId + '\',\'' + index+'\')">' +
+            '<i class="fa fa-times"></i>删除' +
+            '</a>' +
+            '</div>' +
+            '</div></li>';
+        itemListDom.append(item);
+        $("#itemNum").val("");
+
+        getTotalAmount();
+
+    }
+
+    function removeShopItem(id, index) {
+        var item = $("#itemLi_"+id+index);
+        item.remove();
+        var newList = [];
+        for (var i = 0; i < shopItemList.length; i++) {
+            if (id !== shopItemList[i].id && index !== shopItemList[i].itemIndex) {
+                newList.push(shopItemList[i]);
+            } else {
+                totalAmount = totalAmount - shopItemList[i].sumPrice;
+            }
+        }
+        shopItemList = newList;
+        getTotalAmount();
+    }
+
+    function getTotalAmount() {
+        if ($("#orderDiscount").val()) {
+            var orderDiscount = parseFloat($("#orderDiscount").val());
+            var orderAmount = parseFloat((totalAmount * orderDiscount).toFixed(2));
+            $("#orderAmount").val(orderAmount);
+        }
+    }
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var list = [];
+            for (var i = 0; i < shopItemList.length; i++) {
+                var item = {};
+                item.shopItemId = shopItemList[i].shopItemId;
+                item.shopItemName = shopItemList[i].shopItemName;
+                item.itemNum = shopItemList[i].itemNum;
+                item.itemPrice = shopItemList[i].itemPrice;
+                list.push(item);
+            }
+            var data = $("#form-shopOrder-add").serialize();
+            $.operate.save(prefix + "/add", data + "&" + "shopOrderItemsStr=" + JSON.stringify(list));
+        }
+    }
+
+</script>
 </body>
 </html>

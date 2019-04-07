@@ -1,6 +1,9 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.service.ISysNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +26,9 @@ public class SysIndexController extends BaseController
     @Autowired
     private ISysMenuService menuService;
 
+    @Autowired
+    private ISysNoticeService noticeService;
+
     // 系统首页
     @GetMapping("/index")
     public String index(ModelMap mmap)
@@ -41,6 +47,18 @@ public class SysIndexController extends BaseController
     @GetMapping("/system/main")
     public String main(ModelMap mmap)
     {
+        // 查询公告
+        SysNotice noticeQuery = new SysNotice();
+        noticeQuery.setNoticeType("2");
+        startPage();
+        List<SysNotice> noticeList = noticeService.selectNoticeListForIndex(noticeQuery);
+
+        // 查询通知
+        startPage();
+        noticeQuery.setNoticeType("1");
+        List<SysNotice> messageList = noticeService.selectNoticeListForIndex(noticeQuery);
+        mmap.put("noticeList", noticeList);
+        mmap.put("messageList", messageList);
         mmap.put("version", Global.getVersion());
         return "main";
     }

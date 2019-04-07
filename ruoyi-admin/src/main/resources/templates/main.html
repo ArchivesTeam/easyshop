@@ -21,6 +21,81 @@
 						<h2 class="font-bold">
 							欢迎使用门店管理系统
 						</h2>
+                        <!--公告通知-->
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>
+                                            <div class="bg-primary" style="width: 5px; height: 15px; float: left; margin-right: 10px;"></div>
+                                            系统公告
+                                        </h5>
+                                        <div class="text-right">
+                                            <small>
+                                                <a href="#" th:onclick="'javascript:openNoticeList();'">更多...</a>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content" style="height: 400px;">
+                                        <div class="feed-activity-list">
+                                            <div class="feed-element" th:each="notice:${noticeList}">
+                                                <div>
+                                                    <div style="margin-bottom: 5px">
+                                                        <a href="#" th:onclick="'javascript:openNoticeDetail(\''+${notice.noticeId}+'\');'">
+                                                            <strong th:text="${notice.noticeTitle}"></strong>
+                                                        </a>
+                                                    </div>
+                                                    <small class="text-primary">
+                                                        <span th:text="${notice.createBy}"></span>
+                                                    </small>
+                                                    <small class="text-muted" style="margin: 0 5px">|</small>
+                                                    <small class="text-muted">
+                                                        <span>发布于 </span>
+                                                    </small>
+                                                    <small class="text-muted" th:text="${#dates.format(notice.createTime,'yyyy-MM-dd HH:mm:ss')}"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>
+                                            <div style="width: 5px; height: 15px; float: left; margin-right: 10px; background-color: red;"></div>
+                                            通知列表
+                                        </h5>
+                                        <div class="text-right">
+                                            <small>
+                                                <a href="#" th:onclick="'javascript:openNoticeList();'">更多...</a>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content" style="height: 400px;">
+                                        <div class="feed-activity-list">
+                                            <div class="feed-element" th:each="message:${messageList}">
+                                                <div>
+                                                    <div style="margin-bottom: 5px">
+                                                        <a href="#" th:onclick="'javascript:openNoticeDetail(\''+${message.noticeId}+'\');'">
+                                                            <strong th:text="${message.noticeTitle}"></strong>
+                                                        </a>
+                                                    </div>
+                                                    <small class="text-primary">
+                                                        <span th:text="${message.createBy}"></span>
+                                                    </small>
+                                                    <small class="text-muted" style="margin: 0 5px">|</small>
+                                                    <small class="text-muted">
+                                                        <span>发布于 </span>
+                                                    </small>
+                                                    <small class="text-muted" th:text="${#dates.format(message.createTime,'yyyy-MM-dd HH:mm:ss')}"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</div>
@@ -28,5 +103,17 @@
     </div>
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        function openNoticeDetail(id) {
+            var url = '/system/notice/view/'+id;
+            $.modal.openFull('详情', url);
+        }
+
+        function openNoticeList() {
+            var url = '/system/notice';
+            $.modal.openFull('公告通知列表', url);
+        }
+    </script>
 </body>
 </html>

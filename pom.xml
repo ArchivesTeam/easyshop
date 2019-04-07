@@ -10,7 +10,7 @@
 
     <name>easyshop</name>
 	<url>http://www.baidu.com</url>
-    <description>易商门店管理系统</description>
+    <description>门店门店管理系统</description>
     
     <properties>
 	    <ruoyi.version>3.3</ruoyi.version>

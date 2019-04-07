@@ -79,5 +79,5 @@ public class ShopItemServiceImpl implements IShopItemService
 	{
 		return shopItemMapper.deleteShopItemByIds(Convert.toStrArray(ids));
 	}
-	
+
 }

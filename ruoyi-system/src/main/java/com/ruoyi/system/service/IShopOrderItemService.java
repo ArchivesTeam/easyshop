@@ -26,7 +26,9 @@ public interface IShopOrderItemService
      * @return 订单明细集合
      */
 	public List<ShopOrderItem> selectShopOrderItemList(ShopOrderItem shopOrderItem);
-	
+
+	public List<ShopOrderItem> selectShopOrderItemListByOrderId(String orderId);
+
 	/**
      * 新增订单明细
      * 

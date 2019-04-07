@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.github.stuxuhai.jpinyin.PinyinException;
@@ -59,7 +61,20 @@ public class ShopItemController extends BaseController
         List<ShopItem> list = shopItemService.selectShopItemList(shopItem);
 		return getDataTable(list);
 	}
-	
+
+	/**
+	 * ajax查询客户
+	 */
+	@PostMapping("/ajaxList")
+	@ResponseBody
+	public AjaxResult ajaxClientList(String searchValue)
+	{
+		ShopItem shopItem = new ShopItem();
+		shopItem.setSearchValue(searchValue);
+		Map<String, Object> map = new HashMap<>(16);
+		map.put("items", shopItemService.selectShopItemList(shopItem));
+		return AjaxResult.success("成功", map);
+	}
 	
 	/**
 	 * 导出消费项目列表
