@@ -6,9 +6,9 @@ spring:
         druid:
             # 主库数据源
             master:
-                url: jdbc:mysql://192.168.148.129:3306/easyshop?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                url: jdbc:mysql://114.215.97.217:3306/easyshop?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
-                password: root
+                password: SDL@webchat2015
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
