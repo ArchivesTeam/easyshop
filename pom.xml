@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-    <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi</artifactId>
+    <groupId>com.easyshop</groupId>
+    <artifactId>easyshop</artifactId>
     <version>3.3</version>
 
     <name>easyshop</name>
@@ -169,36 +169,36 @@
             
             <!-- 定时任务-->
 			<dependency>
-				<groupId>com.ruoyi</groupId>
-				<artifactId>ruoyi-quartz</artifactId>
+				<groupId>com.easyshop</groupId>
+				<artifactId>easyshop-quartz</artifactId>
 				<version>${ruoyi.version}</version>
 			</dependency>
 	
 			<!-- 代码生成-->
 			<dependency>
-				<groupId>com.ruoyi</groupId>
-				<artifactId>ruoyi-generator</artifactId>
+				<groupId>com.easyshop</groupId>
+				<artifactId>easyshop-generator</artifactId>
 				<version>${ruoyi.version}</version>
 			</dependency>
 			
 			<!-- 核心模块-->
 			<dependency>
-				<groupId>com.ruoyi</groupId>
-				<artifactId>ruoyi-framework</artifactId>
+				<groupId>com.easyshop</groupId>
+				<artifactId>easyshop-framework</artifactId>
 				<version>${ruoyi.version}</version>
 			</dependency>
 			
 	        <!-- 系统模块-->
 			<dependency>
-				<groupId>com.ruoyi</groupId>
-				<artifactId>ruoyi-system</artifactId>
+				<groupId>com.easyshop</groupId>
+				<artifactId>easyshop-system</artifactId>
 				<version>${ruoyi.version}</version>
 			</dependency>
 			
 			<!-- 通用工具-->
 	        <dependency>
-	            <groupId>com.ruoyi</groupId>
-	            <artifactId>ruoyi-common</artifactId>
+	            <groupId>com.easyshop</groupId>
+	            <artifactId>easyshop-common</artifactId>
 	            <version>${ruoyi.version}</version>
 	        </dependency>
 
@@ -206,12 +206,12 @@
     </dependencyManagement>
 
     <modules>
-	    <module>ruoyi-admin</module>
-		<module>ruoyi-framework</module>
-		<module>ruoyi-system</module>
-		<module>ruoyi-quartz</module>
-		<module>ruoyi-generator</module>
-        <module>ruoyi-common</module>
+	    <module>easyshop-admin</module>
+		<module>easyshop-framework</module>
+		<module>easyshop-system</module>
+		<module>easyshop-quartz</module>
+		<module>easyshop-generator</module>
+        <module>easyshop-common</module>
     </modules>
     <packaging>pom</packaging>
 
